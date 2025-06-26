@@ -18,6 +18,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class ControllerAdvice {
 
+
     private static final String DEF_MSG = "Системная ошибка";
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

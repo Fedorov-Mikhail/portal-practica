@@ -1,17 +1,18 @@
 package com.example.portal.dto;
 
 import com.example.portal.entities.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.beans.Transient;
+import javax.persistence.Transient;
+import java.io.File;
 import java.time.LocalDate;
 
 @Data
-public class UserDTO {
+public class UserCreateDTO {
     @NotBlank
     private String name;
     private LocalDate birthday;
@@ -26,11 +27,10 @@ public class UserDTO {
     private String phoneNumber;
     @NotBlank
     private String login;
-    @JsonIgnore
+    @Transient
     private String password;
+
     @NotNull
     private UserRole role;
-
-    private String photo;
 
 }

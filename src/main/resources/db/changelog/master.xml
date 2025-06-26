@@ -4,11 +4,20 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="Mikhail Fedorov">
-        <sqlFile path="db/changelog/scripts/1-init-table-user.sql"/>
+    <changeSet id="1.1" author="Mikhail Fedorov">
+        <sqlFile path="db/changelog/scripts/1.1-init-table-user.sql"/>
+    </changeSet>
+    <changeSet id="1.2" author="Mikhail Fedorov">
+        <sqlFile path="db/changelog/scripts/1.2-insert-table-user.sql"/>
     </changeSet>
     <changeSet id="2" author="Mikhail Fedorov">
-        <sqlFile path="db/changelog/scripts/2-insert-table-user.sql"/>
+        <sqlFile path="db/changelog/scripts/2-init-table-restaudit.sql"/>
+    </changeSet>
+    <changeSet id="3" author="Mikhail Fedorov">
+        <sqlFile path="db/changelog/scripts/3-init-table-userrole.sql"/>
+    </changeSet>
+    <changeSet id="4" author="Mikhail Fedorov">
+        <sqlFile path="db/changelog/scripts/4-init-table-resttype.sql"/>
     </changeSet>
 </databaseChangeLog>
 
