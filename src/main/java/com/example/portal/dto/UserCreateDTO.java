@@ -28,7 +28,6 @@ public class UserCreateDTO {
     private String phone;
     @NotBlank
     private String login;
-    @Transient
     private String password;
 
     @NotNull

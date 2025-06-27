@@ -9,6 +9,7 @@ import com.example.portal.repositories.UserRepository;
 import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.portal.utils.Errors.*;
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ProfileService {
@@ -46,13 +47,13 @@ public class ProfileService {
 
 
     @SneakyThrows
-    public User createUser(UserCreateDTO user, MultipartFile file) {
-        E289.thr(userRepository.findByLoginEqualsIgnoreCase(user.getLogin()).isEmpty(), user.getLogin());
-        E167.thr(!Objects.equal(userDetailsService.getRoleNow(), UserRole.EMPLOYEE));
+    public User createUser(UserCreateDTO user) {
+//        E289.thr(userRepository.findByLoginEqualsIgnoreCase(user.getLogin()).isEmpty(), user.getLogin());
+//        E167.thr(!Objects.equal(userDetailsService.getRoleNow(), UserRole.EMPLOYEE));
 
         String cleanPassword = generateRandomString();
         user.setPassword(cleanPassword);
-
+        log.info("Парольчик {}", cleanPassword);
         User newUser = new User()
                 .setName(user.getName())
                 .setLogin(user.getLogin())
@@ -66,14 +67,14 @@ public class ProfileService {
                 .setRole(user.getRole())
                 .setPassword(userDetailsService.getEncryptedPassword(cleanPassword));
 
-        if (file != null && !file.isEmpty()) {
-            String fileName = "photo_" + user.getLogin() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get("C:\\employee_pictures", fileName);
-            Files.write(filePath, file.getBytes());
-            newUser.setPhoto(filePath.toString());
-        }
+//        if (file != null && !file.isEmpty()) {
+//            String fileName = "photo_" + user.getLogin() + "_" + file.getOriginalFilename();
+//            Path filePath = Paths.get("C:\\employee_pictures", fileName);
+//            Files.write(filePath, file.getBytes());
+//            newUser.setPhoto(filePath.toString());
+//        }
 
-        restAuditService.saveAuditRequest(RestType.POST, user);
+//        restAuditService.saveAuditRequest(RestType.POST, user);
 
         return userRepository.save(newUser);
     }

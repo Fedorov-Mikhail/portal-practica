@@ -30,6 +30,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.exceptionHandling(e -> e
                 .authenticationEntryPoint((request, response, authException) -> {
+                    System.out.println("Unauthorized request to: " + request.getRequestURI());
                     response.setCharacterEncoding(UTF_8);
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -44,7 +45,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         );
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/auth/login", "/swagger-ui/**", "/api-docs/**", "/version", "/employee/create").permitAll()
+                .requestMatchers("/auth/login", "/swagger-ui/**", "/api-docs/**", "/version").permitAll()
                 .anyRequest().authenticated()
         );
 
@@ -54,7 +55,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173")
+                .allowedOrigins("http://localhost:8084")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

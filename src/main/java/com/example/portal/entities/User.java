@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,8 +41,9 @@ public class User extends AbstractEntity{
     private LocalDate birthday;
     @NotBlank
     private String city;
-    @NotBlank
-    @Enumerated(EnumType.STRING) // или EnumType.ORDINAL
+    @NotNull
+    @Column
+    @Enumerated(value = EnumType.STRING)
     private UserRole role;
     private LocalDate startWork;
     @NotBlank

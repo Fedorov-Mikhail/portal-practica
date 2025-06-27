@@ -19,11 +19,9 @@ public class EmployeeController {
         this.profileService = profileService;
     }
 
-
-    @PostMapping(value = "create", consumes = "multipart/form-data")
-    public PositiveResponse<?> createNewUser(@RequestPart("data") @Valid UserCreateDTO body,
-                                             @RequestPart("photo") MultipartFile photo) {
-        return Api.positiveResponse(profileService.createUser(body, photo));
+    @PostMapping("create")
+    public PositiveResponse<?> createNewUser(@Valid @RequestBody UserCreateDTO body) {
+        return Api.positiveResponse(profileService.createUser(body));
     }
     @DeleteMapping("{id}")
     public PositiveResponse<?> deleteUser(@PathVariable Long id) {
