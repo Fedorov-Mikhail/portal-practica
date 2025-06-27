@@ -1,9 +1,11 @@
 package com.example.portal.api;
 
+
+
+import com.example.portal.utils.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.example.portal.utils.Views;
 
 import java.io.Serializable;
 

@@ -1,31 +1,36 @@
 package com.example.portal.entities;
 
+
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.Setter;
-import lombok.Getter;
 import lombok.EqualsAndHashCode;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.apache.catalina.Role;
 
+import javax.xml.bind.annotation.XmlAccessorOrder;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "user_")
+@Accessors(chain = true)
 public class User extends AbstractEntity{
 
     @NotBlank
     private String name;
+    @Email
     private String email;
 
     @JsonIgnore
     private String password;
+
 
     private String post;
     private String telegram;
@@ -49,6 +54,7 @@ public class User extends AbstractEntity{
         // Можно оставить пустым
         // Если в классе User отсутствует публичный или защищённый конструктор без аргументов, возникнет ошибка.
     }
+
 
 
     public User(String name, String email, String password, String post, String telegram, String number, String project, String birth_date, String city) {

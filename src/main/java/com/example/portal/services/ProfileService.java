@@ -16,11 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portal.utils.Errors.E167;
-import static com.example.portal.utils.Errors.E289;
+import static com.example.portal.utils.Errors.*;
 
 @Service
 @AllArgsConstructor
@@ -61,7 +61,7 @@ public class ProfileService {
                 .setBirthday(user.getBirthday())
                 .setStartWork(user.getStartWork())
                 .setCity(user.getCity())
-                .setPhoneNumber(user.getPhoneNumber())
+                .setPhone(user.getPhone())
                 .setIsActive(true)
                 .setRole(user.getRole())
                 .setPassword(userDetailsService.getEncryptedPassword(cleanPassword));
@@ -88,5 +88,14 @@ public class ProfileService {
             sb.append(CHARACTERS.charAt(randomIndex));
         }
         return sb.toString();
+    }
+    @SneakyThrows
+    public Boolean deleteUser(Long userId) {
+        E167.thr(!Objects.equal(userDetailsService.getRoleNow(), UserRole.EMPLOYEE));
+        User user = userRepository.findById(userId).orElseThrow(() -> E612.thr(userId));
+        user.setIsActive(false);
+        userRepository.save(user);
+        restAuditService.saveAuditRequest(RestType.DELETE, Collections.singletonMap("userId", userId));
+        return true;
     }
 }

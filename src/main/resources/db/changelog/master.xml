@@ -19,6 +19,9 @@
     <changeSet id="4" author="Mikhail Fedorov">
         <sqlFile path="db/changelog/scripts/4-init-table-resttype.sql"/>
     </changeSet>
+    <changeSet id="5" author="Mikhail Fedorov">
+        <sqlFile path="db/changelog/scripts/5_init_tables_spring.sql"/>
+    </changeSet>
 </databaseChangeLog>
 
 

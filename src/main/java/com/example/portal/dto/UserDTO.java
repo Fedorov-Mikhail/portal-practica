@@ -23,7 +23,7 @@ public class UserDTO {
     @NotBlank
     private String email;
     @NotBlank
-    private String phoneNumber;
+    private String phone;
     @NotBlank
     private String login;
     @JsonIgnore

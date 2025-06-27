@@ -1,13 +1,14 @@
 package com.example.portal.dto;
 
 import com.example.portal.entities.UserRole;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Transient;
+
 import java.io.File;
 import java.time.LocalDate;
 
@@ -24,7 +25,7 @@ public class UserCreateDTO {
     @NotBlank
     private String email;
     @NotBlank
-    private String phoneNumber;
+    private String phone;
     @NotBlank
     private String login;
     @Transient

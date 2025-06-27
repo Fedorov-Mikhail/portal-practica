@@ -28,23 +28,23 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
-
-        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-            response.setCharacterEncoding(UTF_8);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.getWriter().println("""
-                    {
-                        "result": false,
-                        "code": 401,
-                        "message": "Необходимо авторизоваться"
-                    }
-                    """);
-        });
+        http.exceptionHandling(e -> e
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setCharacterEncoding(UTF_8);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    response.getWriter().println("""
+            {
+                "result": false,
+                "code": 401,
+                "message": "Необходимо авторизоваться"
+            }
+            """);
+                })
+        );
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/auth/login", "/swagger-ui/**", "/api-docs/**", "/version").permitAll()
+                .requestMatchers("/auth/login", "/swagger-ui/**", "/api-docs/**", "/version", "/employee/create").permitAll()
                 .anyRequest().authenticated()
         );
 

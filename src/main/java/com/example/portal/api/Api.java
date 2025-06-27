@@ -1,5 +1,8 @@
 package com.example.portal.api;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Api {
 
     public static <T> PositiveResponse<T> positiveResponse(T data) {
