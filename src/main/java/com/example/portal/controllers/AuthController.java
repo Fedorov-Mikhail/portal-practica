@@ -29,8 +29,4 @@ public class AuthController {
     public PositiveResponse<?> logout(HttpServletRequest request) {
         return Api.positiveResponse(authService.logout(request));
     }
-
-
-
-
 }

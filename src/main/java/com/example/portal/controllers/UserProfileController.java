@@ -28,10 +28,10 @@ public class UserProfileController {
     public User getProfile(@PathVariable Long id) {
         return profileService.getUserProfileById(id);
     }
+
     @GetMapping("/profile/all")
     public List<User> getAllUsers() {
        return profileService.getAllUserProfiles();
-
     }
 }
 

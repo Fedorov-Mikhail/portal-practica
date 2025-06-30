@@ -48,12 +48,18 @@ public class ProfileService {
 
     @SneakyThrows
     public User createUser(UserCreateDTO user) {
-//        E289.thr(userRepository.findByLoginEqualsIgnoreCase(user.getLogin()).isEmpty(), user.getLogin());
-//        E167.thr(!Objects.equal(userDetailsService.getRoleNow(), UserRole.EMPLOYEE));
+        // Проверки и логика (если есть)
 
-        String cleanPassword = generateRandomString();
-        user.setPassword(cleanPassword);
-        log.info("Парольчик {}", cleanPassword);
+        // Получаем пароль, введенный пользователем
+        String userPassword = user.getPassword();
+
+        // Можно добавить проверку на null или пустоту, например:
+        if (userPassword == null || userPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("Пароль не может быть пустым");
+        }
+
+        log.info("Введенный пользователем пароль: {}", userPassword);
+
         User newUser = new User()
                 .setName(user.getName())
                 .setLogin(user.getLogin())
@@ -65,8 +71,11 @@ public class ProfileService {
                 .setPhone(user.getPhone())
                 .setIsActive(true)
                 .setRole(user.getRole())
-                .setPassword(userDetailsService.getEncryptedPassword(cleanPassword));
+                // Шифруем введенный пароль перед сохранением
+                .setPassword(userDetailsService.getEncryptedPassword(userPassword));
 
+        return userRepository.save(newUser);
+    }
 //        if (file != null && !file.isEmpty()) {
 //            String fileName = "photo_" + user.getLogin() + "_" + file.getOriginalFilename();
 //            Path filePath = Paths.get("C:\\employee_pictures", fileName);
@@ -74,11 +83,7 @@ public class ProfileService {
 //            newUser.setPhoto(filePath.toString());
 //        }
 
-//        restAuditService.saveAuditRequest(RestType.POST, user);
-
-        return userRepository.save(newUser);
-    }
-
+    //        restAuditService.saveAuditRequest(RestType.POST, user);
     public static String generateRandomString() {
         final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom RANDOM = new SecureRandom();

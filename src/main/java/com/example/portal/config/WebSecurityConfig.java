@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,28 +29,25 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.exceptionHandling(e -> e
-                .authenticationEntryPoint((request, response, authException) -> {
-                    System.out.println("Unauthorized request to: " + request.getRequestURI());
-                    response.setCharacterEncoding(UTF_8);
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    response.getWriter().println("""
-            {
-                "result": false,
-                "code": 401,
-                "message": "Необходимо авторизоваться"
-            }
-            """);
-                })
-        );
-
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/auth/login", "/swagger-ui/**", "/api-docs/**", "/version").permitAll()
-                .anyRequest().authenticated()
-        );
-
-        return http.build();
+        return http
+                .csrf(csrf -> csrf.disable()) // отключение CSRF
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println("Unauthorized request to: " + request.getRequestURI());
+                            response.setCharacterEncoding("UTF-8");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().println("""
+        {
+            "result": false,
+            "code": 401,
+            "message": "Необходимо авторизоваться"
+        }
+        """);
+                        })
+                )
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+                .build();
     }
 
     @Override

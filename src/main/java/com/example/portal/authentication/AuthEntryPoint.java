@@ -16,6 +16,5 @@ public final class AuthEntryPoint implements AuthenticationEntryPoint {
     public void commence(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
         response.sendError(Integer.parseInt("Необходима авторизация.", HttpServletResponse.SC_UNAUTHORIZED));
-
     }
 }
