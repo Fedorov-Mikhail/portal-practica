@@ -40,9 +40,6 @@ public class UserDetailsService extends AbstractUserDetailsAuthenticationProvide
         String rawPassword = String.valueOf(authentication.getCredentials());
         String encodedPassword = userDetails.getPassword();
 
-        System.out.println("Введённый пароль: " + rawPassword);
-        System.out.println("Зашифрованный пароль из базы: " + encodedPassword);
-
         boolean matched = passwordEncoder.matches(rawPassword, userDetails.getPassword());
 
         if (!matched) {

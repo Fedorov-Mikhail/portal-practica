@@ -25,9 +25,10 @@ public class UserCreateDTO {
     @NotBlank
     private String email;
     @NotBlank
-    private String phone;
+    private String phoneNumber;
     @NotBlank
     private String login;
+    @Transient
     private String password;
 
     @NotNull

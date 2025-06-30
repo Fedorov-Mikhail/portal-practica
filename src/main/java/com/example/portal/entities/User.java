@@ -17,61 +17,39 @@ import org.apache.catalina.Role;
 import javax.xml.bind.annotation.XmlAccessorOrder;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Data
 @Entity
-@Table(name = "user_")
+@Table(name = "users_")
 @Accessors(chain = true)
-public class User extends AbstractEntity{
+@EqualsAndHashCode(callSuper = true)
+public class User extends AbstractEntity<Long> {
 
     @NotBlank
     private String name;
+    private LocalDate birthday;
+    private LocalDate startWork;
+    private String telegram;
+    @NotBlank
+    private String city;
     @Email
     private String email;
+    @NotBlank
+    private String phoneNumber;
 
+    @NotBlank
+    @Column(updatable = false)
+    private String login;
     @JsonIgnore
     private String password;
 
+    private Boolean isActive;
 
-    private String post;
-    private String telegram;
-    @NotBlank
-    private String phone;
-    private String project;
-    private LocalDate birthday;
-    @NotBlank
-    private String city;
     @NotNull
     @Column
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
-    private LocalDate startWork;
-    @NotBlank
-    @Column(updatable = false)
-    private String login;
-    private Boolean isActive;
+
     private String photo;
 
-    public User() {
-        // Можно оставить пустым
-        // Если в классе User отсутствует публичный или защищённый конструктор без аргументов, возникнет ошибка.
-    }
-
-
-
-    public User(String name, String email, String password, String post, String telegram, String number, String project, String birth_date, String city) {
-//        this.setId(id); // если есть поле id в AbstractEntity или в этом классе
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.post = post;
-        this.telegram = telegram;
-        this.phone = phone;
-        this.project = project;
-        this.birthday = birthday;
-        this.city = city;
-        this.role = role;
-        this.startWork = LocalDate.now();
-        this.login = login;
-    }
 }

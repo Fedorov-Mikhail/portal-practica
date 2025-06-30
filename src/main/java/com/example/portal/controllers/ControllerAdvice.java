@@ -24,7 +24,7 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleException(Throwable t) {
         Throwable cause = Optional.ofNullable(t.getCause()).orElse(t);
-        return Api.negativeResponse("5000",
+        return Api.negativeResponse("500",
                 defaultString(cause.getMessage(), DEF_MSG),
                 ExceptionUtils.getStackTrace(cause)
         );

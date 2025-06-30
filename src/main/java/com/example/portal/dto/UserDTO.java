@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.beans.Transient;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 
 @Data
@@ -23,11 +22,13 @@ public class UserDTO {
     @NotBlank
     private String email;
     @NotBlank
-    private String phone;
+    private String phoneNumber;
     @NotBlank
     private String login;
-    @JsonIgnore
+
+    @Transient
     private String password;
+
     @NotNull
     private UserRole role;
 
