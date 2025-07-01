@@ -7,6 +7,9 @@
     <changeSet id="1.1" author="Mikhail Fedorov">
         <sqlFile path="db/changelog/scripts/1.1-init-table-user.sql"/>
     </changeSet>
+    <changeSet id="1.2" author="Mikhail Fedorov">
+        <sqlFile path="db/changelog/scripts/1.2-insert-table-user.sql"/>
+    </changeSet>
     <changeSet id="2" author="Mikhail Fedorov">
         <sqlFile path="db/changelog/scripts/2-init-table-restaudit.sql"/>
     </changeSet>

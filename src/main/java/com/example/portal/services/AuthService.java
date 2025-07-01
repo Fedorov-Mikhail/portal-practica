@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -78,7 +79,8 @@ public class AuthService {
         String accessToken = generateToken(authenticate.getName(), 172800000L); // 2 days
         String refreshToken = generateToken(authenticate.getName(), 86400000L); // 1 day
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserRole role = userRepository.findByLogin(login).getRole();
+        UserRole role = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + login + " не найден."))
+                .getRole();
 
         Map<String, Object> tokens = new HashMap<>(){
             {

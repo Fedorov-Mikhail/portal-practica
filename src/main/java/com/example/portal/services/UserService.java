@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.*;
 
 import static com.example.portal.utils.Errors.*;
@@ -39,6 +40,7 @@ public class UserService {
         restAuditService.saveAuditRequest(RestType.GET, Collections.singletonMap("userId", userId));
         return user;
     }
+
     @SneakyThrows
     public List<BirthdayDTO> getBirthdays(){
         List<User> users = userRepository.getBirthdayUsers();
@@ -70,13 +72,32 @@ public class UserService {
         return userShort;
     }
     @SneakyThrows
-    public User createUser(UserCreateDTO user, MultipartFile file) {
+    public User createUser(String name, String birthday,String startWork, String telegram, String city, String email, String phoneNumber, String login, String password, String role, MultipartFile file) {
+        // Переводишь в UserCreateDTO (передать все стринги, с их параметрами)
+        UserCreateDTO user = new UserCreateDTO()
+                .setName(name)
+                .setBirthday(LocalDate.parse(birthday))
+                .setStartWork(LocalDate.parse(startWork))
+                .setTelegram(telegram)
+                .setCity(city)
+                .setEmail(email)
+                .setPhoneNumber(phoneNumber)
+                .setLogin(login)
+                .setPassword(password)
+                .setRole(UserRole.valueOf(role));
+
         E289.thr(userRepository.findByLoginEqualsIgnoreCase(user.getLogin()).isEmpty(), user.getLogin());
         E167.thr(!Objects.equal(userDetailsService.getRoleNow(), UserRole.EMPLOYEE));
+        String userPassword = user.getPassword();
 
+        if (userPassword == null || userPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("Пароль не может быть пустым");
+        }
+
+        System.out.println("Введенный пользователем пароль: " + userPassword);
         String cleanPassword = generateRandomString();
         user.setPassword(cleanPassword);
-
+        System.out.println("пароль: " + cleanPassword);
         User newUser = new User()
                 .setName(user.getName())
                 .setLogin(user.getLogin())
@@ -92,7 +113,7 @@ public class UserService {
 
         if (file != null && !file.isEmpty()) {
             String fileName = "photo_" + user.getLogin() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get("C:\\employee_pictures", fileName);
+            Path filePath = Paths.get("C:\\photo", fileName);
             Files.write(filePath, file.getBytes());
             newUser.setPhoto(filePath.toString());
         }
@@ -134,7 +155,7 @@ public class UserService {
         E101.thr(!file.isEmpty() && !java.util.Objects.equals(file.getOriginalFilename(), "jpg"));
         if (file != null && !file.isEmpty()) {
             String fileName = "photo_" + user.getLogin() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get("C:\\employee_pictures", fileName);
+            Path filePath = Paths.get("C:\\photo", fileName);
             Files.write(filePath, file.getBytes());
             user.setPhoto(filePath.toString());
         }

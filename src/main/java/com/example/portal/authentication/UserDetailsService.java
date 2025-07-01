@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import static com.example.portal.utils.TextConstant.*;
 
@@ -32,7 +33,6 @@ public class UserDetailsService extends AbstractUserDetailsAuthenticationProvide
         System.err.println(ADDITIONAL_AUTHENTICATION_CHECKS);
     }
 
-
     @Override
     @Transactional
     public UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
@@ -40,16 +40,17 @@ public class UserDetailsService extends AbstractUserDetailsAuthenticationProvide
         String rawPassword = String.valueOf(authentication.getCredentials());
         String encodedPassword = userDetails.getPassword();
 
+        System.out.println("Введённый пароль: " + rawPassword);
+        System.out.println("Зашифрованный пароль из базы: " + encodedPassword);
+
         boolean matched = passwordEncoder.matches(rawPassword, userDetails.getPassword());
 
         if (!matched) {
             System.out.println("Пароль не совпадает");
             throw new BadCredentialsException(INCORRECT_PASSWORD);
         }
-
         return userDetails;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -57,25 +58,23 @@ public class UserDetailsService extends AbstractUserDetailsAuthenticationProvide
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), Collections.emptyList());
     }
 
-
     public User getActiveUser(String login) {
         User user = findByLogin(login);
         Preconditions.checkState(BooleanUtils.toBoolean(user.getIsActive()), ACCOUNT_IS_NOT_ACTIVE);
         return user;
     }
 
-
     public UserRole getRoleNow() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByLogin(login).getRole();
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_DEFINED));
+        return user.getRole();
     }
-
 
     public User findByLogin(String login) {
         return userRepository.findByLoginEqualsIgnoreCase(login)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_DEFINED));
     }
-
 
     public Long getIdNow() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -84,14 +83,12 @@ public class UserDetailsService extends AbstractUserDetailsAuthenticationProvide
         return user.getId();
     }
 
-
     public String getNameNow() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByLoginEqualsIgnoreCase(login)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_DEFINED));
         return user.getName();
     }
-
 
     public String getEncryptedPassword(String password){
         return passwordEncoder.encode(password);

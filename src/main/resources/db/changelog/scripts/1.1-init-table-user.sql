@@ -1,7 +1,7 @@
 CREATE SEQUENCE if not exists seq_users_id;
 
 
-CREATE TABLE if not exists user_
+CREATE TABLE if not exists users_
 (
     id                BIGSERIAL PRIMARY KEY not null,
     modification_date timestamp             not null default now(),
@@ -15,7 +15,7 @@ CREATE TABLE if not exists user_
     phone_number      VARCHAR(255)          NOT NULL,
     login             VARCHAR(255)          NOT NULL,
     password          VARCHAR(255)          NOT NULL,
-    is_active         BOOLEAN                        default false,
-    role              VARCHAR(10)             NOT NULL,
+    is_active         BOOLEAN               default false,
+    role              VARCHAR(10)           NOT NULL,
     photo             text
 );

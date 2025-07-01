@@ -29,25 +29,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable()) // отключение CSRF
-                .exceptionHandling(e -> e
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            System.out.println("Unauthorized request to: " + request.getRequestURI());
-                            response.setCharacterEncoding("UTF-8");
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType("application/json");
-                            response.getWriter().println("""
-        {
-            "result": false,
-            "code": 401,
-            "message": "Необходимо авторизоваться"
-        }
-        """);
-                        })
-                )
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-                .build();
+        http
+                .csrf().disable() // Отключить CSRF, если необходимо
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll() // Разрешить все запросы
+                );
+
+        return http.build();
     }
 
     @Override

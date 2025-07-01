@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.example.portal.entities.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -25,23 +26,35 @@ public class UserController {
     public PositiveResponse<?> getUser(@PathVariable Long id) {
         return Api.positiveResponse(userService.getUser(id));
     }
+
     @GetMapping("birthdays")
     public PositiveResponse<?> getUpcomingBirthdays() {
         return Api.positiveResponse(userService.getBirthdays());
     }
+
     @GetMapping()
     public PositiveResponse<?> getAllUsers() {
         return Api.positiveResponse(userService.getAllUsers());
     }
+
     @PostMapping(consumes = "multipart/form-data")
-    public PositiveResponse<?> createNewUser(@RequestPart("data") @Valid UserCreateDTO body,
-                                             @RequestPart("photo") MultipartFile photo) {
-        return Api.positiveResponse(userService.createUser(body, photo));
+    public PositiveResponse<?> createNewUser(@RequestPart(value = "name") String name,
+                                             @RequestPart(value = "birthday") String birthday,
+                                             @RequestPart(value = "startWork") String startWork,
+                                             @RequestPart(value = "telegram") String telegram,
+                                             @RequestPart(value = "city") String city,
+                                             @RequestPart(value = "email") String email,
+                                             @RequestPart(value = "phoneNumber") String phoneNumber,
+                                             @RequestPart(value = "login") String login,
+                                             @RequestPart(value = "password") String password,
+                                             @RequestPart(value = "role") String role,
+                                             @RequestPart(value = "photo") MultipartFile photo) {
+        return Api.positiveResponse(userService.createUser(name, birthday, startWork, telegram, city, email, phoneNumber, login, password, role, photo));
     }
 
     @PostMapping(value = "{id}", consumes = "multipart/form-data")
     public PositiveResponse<?> updateUserPhoto(@RequestPart("data") @PathVariable @Valid Long id,
-                                               @RequestPart("photo") MultipartFile photo) {
+                                               @RequestPart(value = "photo", required = false) MultipartFile photo) {
         return Api.positiveResponse(userService.updateUserPhoto(id, photo));
     }
 
