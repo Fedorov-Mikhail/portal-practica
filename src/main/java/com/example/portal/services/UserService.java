@@ -95,6 +95,7 @@ public class UserService {
         }
         System.out.println("Введенный пользователем пароль: " + userPassword);
         String cleanPassword = generateRandomString();
+        System.out.println(" Настоящий пароль: " + cleanPassword);
         user.setPassword(cleanPassword);
         User newUser = new User()
                 .setName(user.getName())

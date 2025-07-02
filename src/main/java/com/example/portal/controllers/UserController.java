@@ -32,7 +32,7 @@ public class UserController {
         return Api.positiveResponse(userService.getBirthdays());
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public PositiveResponse<?> getAllUsers() {
         return Api.positiveResponse(userService.getAllUsers());
     }
