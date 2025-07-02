@@ -55,6 +55,7 @@
 			<version>5.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
@@ -133,6 +134,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-
 </project>

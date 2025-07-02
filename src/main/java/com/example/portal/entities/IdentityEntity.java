@@ -11,7 +11,7 @@ public abstract class IdentityEntity<V> {
 
     @Id
     @Column(updatable = false, nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "global_sequence", allocationSize = 1)
     private V id;
 }

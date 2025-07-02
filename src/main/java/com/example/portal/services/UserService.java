@@ -93,11 +93,9 @@ public class UserService {
         if (userPassword == null || userPassword.trim().isEmpty()) {
             throw new IllegalArgumentException("Пароль не может быть пустым");
         }
-
         System.out.println("Введенный пользователем пароль: " + userPassword);
         String cleanPassword = generateRandomString();
         user.setPassword(cleanPassword);
-        System.out.println("пароль: " + cleanPassword);
         User newUser = new User()
                 .setName(user.getName())
                 .setLogin(user.getLogin())

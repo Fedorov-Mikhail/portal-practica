@@ -1,6 +1,3 @@
-CREATE SEQUENCE if not exists seq_users_id;
-
-
 CREATE TABLE if not exists users_
 (
     id                BIGSERIAL PRIMARY KEY not null,
